@@ -4,6 +4,7 @@ while :
 do
   data="$(cat /proc/meminfo | grep 'MemAvailable')"
   read -a arr <<< "$data"
-  echo "$(date +"%T");${arr[1]}kB" >> "logs.txt"
+  fileNumber=$(cat "pid.txt")
+  echo "$(date +"%T");${arr[1]}kB" >> "logs-${fileNumber}.csv"
   sleep 600
 done
