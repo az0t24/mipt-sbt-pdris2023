@@ -1,0 +1,16 @@
+FROM golang:1.20-alpine AS builder
+
+WORKDIR /workspace
+COPY go.* .
+COPY main.go main.go
+
+RUN go mod download
+
+RUN go build -o client main.go
+
+FROM gcr.io/distroless/static:nonroot
+WORKDIR /
+COPY --from=builder /workspace/client .
+USER 65532:65532
+
+ENTRYPOINT ["/client"]
