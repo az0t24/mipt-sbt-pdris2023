@@ -1,0 +1,29 @@
+---
+- hosts: "all"
+  tasks:
+  - name: Clone repo to workdir/
+    git:
+      repo: https://github.com/az0t24/simple-monitor.git
+      dest: workdir/
+
+  - name: Copy Dockerfile to workdir/
+    copy:
+      src: ./Dockerfile
+      dest: workdir/Dockerfile
+      owner: az0t24
+      group: az0t24
+      mode: '0644'
+
+  - name: Build image
+    docker_image:
+      name: simple_cpu_monitor
+      build:
+        path: workdir/
+      source: build
+      state: present
+
+  - name: Start a container with a command
+    docker_container:
+      name: simple_cpu_monitor
+      image: simple_cpu_monitor
+      command: ["go", "run", "main.go"]
