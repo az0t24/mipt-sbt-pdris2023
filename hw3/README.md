@@ -1,0 +1,1 @@
+Для запуска нужно ввести команду `ansible-playbook -i inventory playbook.yaml`.
